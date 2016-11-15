@@ -18,16 +18,17 @@ Snippet from `demo.html`
 
     // register the listener
     Events.on('demo-content-set', function() {
-        console.log('Content was set!')
+        console.log('Content was set! (tick is: ' + Events.scheduler.tick + ')')
     })
 
     // schedule a job for track content change
-    Events.scheduler.add(new Job({
+    Events.scheduler.add(new EventDispatch({
         name: 'Demo Change Job',
         event: 'demo-content-set',
         filter: function() {
             if (document.getElementById('demo').textContent === 'Demo content!') return true
         },
+        hold: 0,
         recurring: false
     }))
 </script>

@@ -2,8 +2,9 @@
     Job : an object that manages the --execution of a task-- emitting of an event in the scheduler
 */
 
+
 ;(function (undefined) {
-  function job (opts) {
+  function eventDispatch (opts) {
     if (typeof opts != 'object') throw new Error('opts must be an object!')
     if (!opts['event'] || !opts['filter']) throw new Error('Missing required options')
 
@@ -15,15 +16,20 @@
       invoke: opts.filter
     }
 
+    this.timing = {
+      hold: opts['timing']['hold'] || 0
+    }
+
     this.recurring = (opts['recurring'] != undefined) ? opts.recurring : true
   }
 
-  window.Job = job
+  window.EventDispatch = eventDispatch
 })(undefined)
 
 /*
     Events : used for managing custom events. Shocker, right?
 */
+
 
 ;(function (events, undefined) {
   var _listeners = {}
@@ -49,18 +55,21 @@
       this._interval = setInterval(function () {
         // iterate through our jobs and invoke filters as needed
         for (var event in self._eventMap) {
-          self._eventMap[event].map(function (job) {
-            if (!job.filter._once) {
-              if (job.filter.invoke() == true) {
-                emit(job.event)
-                job.filter._once = true
-              }
-            } else {
-              if (job.recurring === true) {
-                if (job.filter.invoke() == true) {
-                  emit(job.event)
+          self._eventMap[event].map(function (eventDispatch) {
+            if (self.tick > eventDispatch.timing.tick + eventDispatch.timing.hold) {
+              if (!eventDispatch.filter._once) {
+                if (eventDispatch.filter.invoke() == true) {
+                  emit(eventDispatch.event)
+                  eventDispatch.filter._once = true
+                }
+              } else {
+                if (eventDispatch.recurring === true) {
+                  if (eventDispatch.filter.invoke() == true) {
+                    emit(eventDispatch.event)
+                  }
                 }
               }
+              eventDispatch.timing.tick = self.tick
             }
           })
         }
@@ -77,13 +86,16 @@
     _update: function () {
       var self = this
       if (this._queue.length > 0) {
-        this._queue.map(function (job) {
+        this._queue.map(function (eventDispatch) {
           // define the event if needed
-          if (!self._eventMap.hasOwnProperty(job.event)) {
-            self._eventMap[job.event] = []
+          if (!self._eventMap.hasOwnProperty(eventDispatch.event)) {
+            self._eventMap[eventDispatch.event] = []
           }
 
-          self._eventMap[job.event].push(job)
+          // set when the queue touched the eventDispatch
+          eventDispatch.timing['tick'] = self.tick
+
+          self._eventMap[eventDispatch.event].push(eventDispatch)
         })
 
         // clear the queue
@@ -123,6 +135,7 @@
 
   window.Events = events
 })(window.Events || {}, undefined)
+
 
 ;(function (undefined) {
 
