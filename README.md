@@ -2,8 +2,8 @@
 
 Events.js is a library for managing custom events.
 
+It includes a built-in scheduler for queueing Event Dispatchers, making it easy and familiar to create custom events.
 
-It includes a scheduler for queueing Event Jobs, and a familiar, easy to use API.
 
 ### Getting Started
 Snippet from `demo.html`
@@ -37,7 +37,7 @@ Snippet from `demo.html`
 ```
 
 ## Docs
-Events.js can be used to manage custom event signally with an API familiar to those you may have used in JavaScript  before.
+Events.js can be used to manage custom event signaling with an API familiar to those you may have used in JavaScript before.
 
 Events.js API allows you to set as many listeners for a single event, just like `window.addEventListener`.
 
@@ -49,11 +49,11 @@ Events.js API allows you to set as many listeners for a single event, just like 
 Registers a handler for the specified event.
 The handler can take any arrangement of arguments (see [`emit`](#emit))
 
- <a name="emit"></a>`Events.emit(event, [params,])`
+ <a name="emit"></a>`Events.emit(event[, arg1[, arg2[, ...]]])`
 + event : The name of the event to emit
 + params : Arguments to pass to the event handler
 
-Emits the specified event.
+Emits the specified event (asynchronously).
 
 Any arguments after `event` will be forwarded to the event handler.
 
