@@ -28,7 +28,9 @@ Snippet from `demo.html`
         filter: function() {
             if (document.getElementById('demo').textContent === 'Demo content!') return true
         },
-        hold: 0,
+        timing: {
+          hold: 0
+        },
         recurring: false
     }))
 </script>
@@ -45,9 +47,9 @@ Events.js API allows you to set as many listeners for a single event, just like 
 + handler : The callback to be called when the event occurs.
 
 Registers a handler for the specified event.
-The handler can take any arrangement of arguments (see [`emit`]())
+The handler can take any arrangement of arguments (see [`emit`](#emit))
 
-`Events.emit(event, [params,])`
+ <a name="emit"></a>`Events.emit(event, [params,])`
 + event : The name of the event to emit
 + params : Arguments to pass to the event handler
 
@@ -60,7 +62,7 @@ Any arguments after `event` will be forwarded to the event handler.
 `Events.scheduler.add(eventDispatch)`
 + eventDispatch : The EventDispatch to add to the scheduler queue
 
-Adds an [EventDispatch]() to the queue.
+Adds an [EventDispatch](#eventdispatch) to the queue.
 
 
 ### EventDispatch
@@ -80,7 +82,7 @@ Adds an [EventDispatch]() to the queue.
 }
 ```
 
-+ name : The name of the EventDispatch (default: `event`) 
++ name : The name of the EventDispatch (default: `event`)
 + event : The event to emit (required)
 + filter : A function that applies logic for emitting the event. When `filter` returns `true`, `event` is emitted by the scheduler.
 + timing : An object that configures when the `filter` should be applied.
