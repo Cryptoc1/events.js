@@ -78,7 +78,7 @@ Adds an [EventDispatch](#eventdispatch) to the queue.
       tick: Number,
       hold: Number
     },
-    recurring: Bool
+    recurring: Boolean
 }
 ```
 
