@@ -92,10 +92,10 @@ Adds an [EventDispatch](#eventdispatch) to the queue.
 
 `event`, and `filter` are required options.
 
-
-
+<br>
+<br>
 For an example of how to use Events.js, see the [demo](https://cryptoc1.github.io/events.js/demo.html)
-
+<br>
 
 <hr>
 ## License
