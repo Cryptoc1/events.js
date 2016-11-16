@@ -43,7 +43,7 @@
 
   var scheduler = {
     // properties
-    _delay: 100,
+    delay: 100,
     _eventMap: {},
     _interval: null,
     tick: 0,
@@ -54,12 +54,20 @@
       this._queue.push(job)
     },
     init: function (opts) {
+      // ensure everything is cleared out
+      if (this._interval != null) {
+        window.clearInterval(this._interval)
+        this._interval = null
+
+        this._queue = []
+        this._eventMap = {}
+
+        this.tick = 0
+      }
+
       var self = this
 
-      // mask the warning
-      on('Events.scheduler-tick', function () {})
-
-      this._interval = setInterval(function () {
+      this._interval = window.setInterval(function () {
         // iterate through our jobs and invoke filters as needed
         for (var event in self._eventMap) {
           self._eventMap[event].map(function (eventDispatch) {
@@ -83,13 +91,14 @@
 
         // emit that a new tick occured
         emit('Events.scheduler-tick', {
-          tick: self.tick
+          tick: self.tick,
+          time: Date.now()
         })
 
         // sync the queue and eventmap
         self._update()
         self.tick++
-      }, this._delay)
+      }, this.delay)
     },
     _update: function () {
       var self = this
@@ -135,6 +144,7 @@
   }
 
   events.scheduler = scheduler
+
   events.scheduler.init()
 
   // public
