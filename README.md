@@ -101,4 +101,4 @@ For an example of how to use Events.js, see the [demo](https://cryptoc1.github.i
 ## License
 MIT
 
-&copy; Samuel Steele <@cryptoc1>
+&copy; Samuel Steele &lt;@cryptoc1>
