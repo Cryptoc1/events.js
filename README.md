@@ -55,7 +55,7 @@ The handler can take any arrangement of arguments (see [`emit`](#emit))
 
 Emits the specified event (asynchronously).
 
-Any arguments after `event` will be forwarded to the event handler.
+Any arguments after `event` will be forwarded to the event handler as an argument list.
 
 
 ### Scheduler
