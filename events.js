@@ -8,7 +8,7 @@
     if (typeof opts != 'object') throw new Error('opts must be an object!')
     if (!opts['event'] || !opts['filter']) throw new Error('Missing required options')
 
-    this.name = opts['name']
+    this.name = opts['name'] || opts.event
     this.event = opts.event
 
     this.filter = {
@@ -17,7 +17,14 @@
     }
 
     this.timing = {
-      hold: opts['timing']['hold'] || 0
+      tick: 0,
+      hold: 0
+    }
+    if (opts['timing']) {
+      this.timing = {
+        tick: opts.timing['tick'] || 0,
+        hold: opts.timing['hold'] || 0
+      }
     }
 
     this.recurring = (opts['recurring'] != undefined) ? opts.recurring : true
@@ -74,13 +81,14 @@
           })
         }
 
-        // update the queue and eventmap every tick
-        self._update()
-        self.tick++
-
+        // emit that a new tick occured
         emit('Events.scheduler-tick', {
           tick: self.tick
         })
+
+        // sync the queue and eventmap
+        self._update()
+        self.tick++
       }, this._delay)
     },
     _update: function () {

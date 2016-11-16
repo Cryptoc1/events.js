@@ -16,7 +16,7 @@
 
         // register the listener
         Events.on('demo-content-set', function() {
-            console.log('Content was set! (tick is: ' + Events.scheduler.tick + ')')
+            window.alert('Content was set! (tick is: ' + Events.scheduler.tick + ')')
         })
 
         // schedule a job for track content change
@@ -25,9 +25,6 @@
             event: 'demo-content-set',
             filter: function() {
                 if (document.getElementById('demo').textContent === 'Demo content!') return true
-            },
-            timing: {
-              hold: 0
             },
             recurring: false
         }))

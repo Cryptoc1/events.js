@@ -18,7 +18,7 @@ Snippet from `demo.html`
 
     // register the listener
     Events.on('demo-content-set', function() {
-        console.log('Content was set! (tick is: ' + Events.scheduler.tick + ')')
+        window.alert('Content was set! (tick is: ' + Events.scheduler.tick + ')')
     })
 
     // schedule a job for track content change
@@ -35,9 +35,68 @@ Snippet from `demo.html`
 ```
 
 ## Docs
-@TODO
+Events.js can be used to manage custom event signally with an API familiar to those you may have used in JavaScript  before.
 
-### License
+Events.js API allows you to set as many listeners for a single event, just like `window.addEventListener`.
+
+### API
+`Events.on(event, handler)`
++ event : The name of the event to listen to
++ handler : The callback to be called when the event occurs.
+
+Registers a handler for the specified event.
+The handler can take any arrangement of arguments (see [`emit`]())
+
+`Events.emit(event, [params,])`
++ event : The name of the event to emit
++ params : Arguments to pass to the event handler
+
+Emits the specified event.
+
+Any arguments after `event` will be forwarded to the event handler.
+
+
+### Scheduler
+`Events.scheduler.add(eventDispatch)`
++ eventDispatch : The EventDispatch to add to the scheduler queue
+
+Adds an [EventDispatch]() to the queue.
+
+
+### EventDispatch
+`new EventDispatch(options)`
++ options : An object defining how the EventDispatch behaves
+
+```javascript
+{
+    name: String,
+    event: String,
+    filter: Function,
+    timing: {
+      tick: Number,
+      hold: Number
+    },
+    recurring: Bool
+}
+```
+
++ name : The name of the EventDispatch (default: `event`) 
++ event : The event to emit (required)
++ filter : A function that applies logic for emitting the event. When `filter` returns `true`, `event` is emitted by the scheduler.
++ timing : An object that configures when the `filter` should be applied.
+    + tick : The scheduler tick to apply `filter` after. (default: `0`)
+    + hold : The number of ticks after `tick` to wait before applying `filter`. (default: `0`)
++ recurring : Whether or not `filter` should be applied every `timing.tick + timing.hold` ticks, or only once. (default: `true`)
+
+`event`, and `filter` are required options.
+
+
+
+For an example of how to use Events.js, see the [demo](https://cryptoc1.github.io/events.js/demo.html)
+
+
+<hr>
+## License
 MIT
 
 &copy; Samuel Steele <@cryptoc1>
